@@ -1,13 +1,15 @@
 $(document).ready(function () {
 
     $(".btn").click(getInputAndReload);
-    var level = 4;
-    var is_solved = true;
-    var graph;
+
+    let level = 4;
+    let graph = new Graph("playground", fps = 30, editable = true, buildable = false)
+
     loadGame(level);
 
     function loadGame(level) {
         drawGraph(level);
+        $("#text").html(`game load with level ${level}`);
     }
 
     function getInputAndReload() {
@@ -36,16 +38,19 @@ $(document).ready(function () {
         return [xInterect, yIntersect];
     }
 
-    function drawGraph(level) {
+    function drawGraph(level_n) {
+        // Erase old graph
+        Object.values(graph.objs).map(node => node.delete());
 
-        let lines = randomLines(level);
+        // Set global level variabe
+        level = level_n;
 
-        let nodes = {
-        };
-        let coordinates = {
-        };
+        // Make sure levels don't become exponentially difficult
+        let n_lines = Math.ceil(Math.sqrt(2 * (level + 1)));
+        let lines = randomLines(n_lines);
 
-        graph = new Graph("playground", fps = 10, editable = true, buildable = false)
+        let nodes = {};
+        let coordinates = {};
 
         lines.map((line, ii) => {
             let intersections = [];
@@ -63,7 +68,6 @@ $(document).ready(function () {
 
             });
             intersections.sort((a, b) => a[0][0] - b[0][0]);
-            intersections.map(e => console.log(e[0], e[1]));
 
             intersections.map((current, index) => {
                 if (index == intersections.length - 1) {
@@ -118,22 +122,38 @@ $(document).ready(function () {
         }
     };
 
-    function graph_intersects(graph, level) {
+    function resizeCanvas() {
+        let context = $("#playground").get(0).getContext("2d");
+        context.canvas.height = $(".game-area").height() * 0.95;
+        context.canvas.width = $(".game-area").width() * 0.95;
+
+        Object.values(graph.objs).map(node => {
+            node.x = Math.random() * context.canvas.width;
+            node.y = Math.random() * context.canvas.height;
+        })
+    };
+
+    function graph_intersects(graph) {
+        let date = new Date()
+        // Evaluation function seems to be slow. 
+        // Don't evaluate on every tick
+        if (date.getTime() % 1000 > 50) {
+            return
+        }
+        let is_solved = true;
         let nodes = graph.objs;
         Object.values(nodes).map(
             node => {
-
                 node.children.map(
                     child => {
                         let neighbour = nodes[child];
-
-
                         let edges = graph.edges;
                         Object.values(edges).map(
                             edge => {
                                 let start = edge.startNodeid;
                                 let end = edge.endNodeid;
-                                if (node.id != start && node.id != end) {
+                                // The intersecting edge must not be on node and neigbour vertices
+                                if (node.id != start && node.id != end && neighbour.id != start && neighbour.id != end) {
                                     let startNode = nodes[start];
                                     let endNode = nodes[end];
                                     let doesIt = intersects(node.x, node.y, neighbour.x, neighbour.y, startNode.x, startNode.y, endNode.x, endNode.y);
@@ -141,7 +161,6 @@ $(document).ready(function () {
                                         is_solved = false;
                                     }
                                 }
-
                             }
                         )
                     }
@@ -149,31 +168,17 @@ $(document).ready(function () {
             }
         );
         if (is_solved) {
-            $(".solved").html(`level ${level} solved`);
+            // The game is solved. Move to next level
+            loadGame(level + 1)
             return;
         }
     };
 
-    function resizeCanvas() {
-        let context = $("#playground").get(0).getContext("2d");
-        context.canvas.height = $(".game-area").height() * 0.95;
-        context.canvas.width = $(".game-area").width() * 0.95;
-
-        console.log(graph);
-        Object.values(graph.objs).map(node => {
-            node.x = Math.random() * context.canvas.width;
-            node.y = Math.random() * context.canvas.height;
-        })
-    };
-
     resizeCanvas();
-
     graph.setTickCallback(graph_intersects);
 
     $(window).resize(function () {
         resizeCanvas();
     });
-
-
 
 });
