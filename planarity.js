@@ -2,12 +2,13 @@ $(document).ready(function () {
 
     $(".btn").click(getInputAndReload);
     var level = 4;
-    var graph = loadGame(level);
+    var is_solved = true;
+    var graph;
+    loadGame(level);
 
     function loadGame(level) {
-        var graph = drawGraph(level);
+        drawGraph(level);
         $("#text").html(`game load with level ${level}`);
-        return graph;
     }
 
     function getInputAndReload() {
@@ -45,7 +46,7 @@ $(document).ready(function () {
         let coordinates = {
         };
 
-        let graph = new Graph("playground", fps = 60, editable = true, buildable = false)
+        graph = new Graph("playground", fps = 10, editable = true, buildable = false)
 
         lines.map((line, ii) => {
             let intersections = [];
@@ -83,8 +84,8 @@ $(document).ready(function () {
                 // Because only the topology of the graph is important
 
                 // TODO: Use interesting random distributions here
-                let x = Math.random() * 900;
-                let y = Math.random() * 900;
+                let x = Math.random() * 500;
+                let y = Math.random() * 500;
 
                 node_objects[node] = graph.node(x, y, 10);
             }
@@ -100,7 +101,6 @@ $(document).ready(function () {
                 })
             }
         )
-        return graph;
     }
 
     // Reference
@@ -121,8 +121,6 @@ $(document).ready(function () {
 
     function graph_intersects(graph, level) {
         let nodes = graph.objs;
-        let is_solved = true;
-
         Object.values(nodes).map(
             node => {
 
@@ -152,10 +150,10 @@ $(document).ready(function () {
             }
         );
         if (is_solved) {
-            var nextLevel = level + 1;
-            loadGame(nextLevel);
+            return;
         }
     };
+
     function resizeCanvas() {
         let context = $("#playground").get(0).getContext("2d");
         context.canvas.height = $(".game-area").height() * 0.95;
@@ -165,5 +163,8 @@ $(document).ready(function () {
 
     resizeCanvas();
     graph.setTickCallback(graph_intersects);
-    //drawGraph();
+
+
+
+
 });
