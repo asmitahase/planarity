@@ -41,8 +41,8 @@ The vertices of the graph are then randomly shuffled maintaining the topology to
 
 ## GamePlay
 
-1. You'll be presented with a planer tangled graph at level 4 at the beginning
-2. Move the nodes with your mouse to untangle the graph and reach the next level 
+1. Player will be presented with a planer tangled graph at level 4 at the beginning
+2. Move the nodes with a pointing device to untangle the graph and reach the next level 
 
 
 ## TechStack
