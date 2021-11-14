@@ -1,26 +1,26 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     $(".btn").click(getInputAndReload);
 
 
-    function loadGame(level=4){
+    function loadGame(level = 4) {
         $("#text").html(`game load with level ${level}`);
     }
 
-    function getInputAndReload(){
+    function getInputAndReload() {
         level = document.getElementById('input_id').value;
         loadGame(level);
     }
-    function renderGraph(){
+    function renderGraph() {
         return graphDS;
     }
-    function drawGraph(graphDS){
+    function drawGraph(graphDS) {
 
         let nodes = {
-        1: [2,3,4],
-        2: [1,3,4],
-        3: [1,2,4],
-        4: [1,2,3],
+            1: [2, 3, 4],
+            2: [1, 3, 4],
+            3: [1, 2, 4],
+            4: [1, 2, 3],
         };
         let coordinates = {
             1: [100, 100],
@@ -29,7 +29,7 @@ $(document).ready(function() {
             4: [200, 200],
         };
 
-        let graph = new Graph("playground", fps=60, editable=true, buildable=false)
+        let graph = new Graph("playground", fps = 60, editable = true, buildable = false)
 
         // Draw all nodes;
         let node_objects = {};
@@ -55,13 +55,13 @@ $(document).ready(function() {
             }
         );
 
-    }   
-        
+    }
+
     // Reference
     // https://stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function
     // https://stackoverflow.com/a/24392281
     // returns true if the line from (a,b)->(c,d) intersects with (p,q)->(r,s)
-    function intersects(a,b,c,d,p,q,r,s) {
+    function intersects(a, b, c, d, p, q, r, s) {
         var det, gamma, lambda;
         det = (c - a) * (s - q) - (r - p) * (d - b);
         if (det === 0) {
@@ -79,17 +79,17 @@ $(document).ready(function() {
 
         Object.values(nodes).map(
             node => {
-        
+
                 node.children.map(
-                    child=> {
+                    child => {
                         let neighbour = nodes[child];
-                        
+
 
                         let edges = graph.edges;
                         Object.values(edges).map(
                             edge => {
-                                let start = edge.startNodeid; 
-                                let end = edge.endNodeid; 
+                                let start = edge.startNodeid;
+                                let end = edge.endNodeid;
                                 if (node.id != start && node.id != end) {
                                     let startNode = nodes[start];
                                     let endNode = nodes[end];
