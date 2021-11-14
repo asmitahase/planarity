@@ -9,7 +9,8 @@ $(document).ready(function () {
 
     function loadGame(level) {
         drawGraph(level);
-        $("#text").html(`game load with level ${level}`);
+        $("#solved").html("");
+        $("#level").html(`You're playing level ${level}`);
     }
 
     function getInputAndReload() {
@@ -169,7 +170,8 @@ $(document).ready(function () {
         );
         if (is_solved) {
             // The game is solved. Move to next level
-            loadGame(level + 1)
+            $("#solved").html(`Congratulations, You've completed level ${level}`);
+            loadGame(level + 1);
             return;
         }
     };
