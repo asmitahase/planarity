@@ -86,7 +86,7 @@ $(document).ready(function () {
                 let x = Math.random() * 500;
                 let y = Math.random() * 500;
 
-                node_objects[node] = graph.node(x, y, 10);
+                node_objects[node] = graph.node(x, y, 15);
             }
         );
 
