@@ -8,7 +8,6 @@ $(document).ready(function () {
 
     function loadGame(level) {
         drawGraph(level);
-        $("#text").html(`game load with level ${level}`);
     }
 
     function getInputAndReload() {
@@ -150,6 +149,7 @@ $(document).ready(function () {
             }
         );
         if (is_solved) {
+            $(".solved").html(`level ${level} solved`);
             return;
         }
     };
@@ -159,11 +159,20 @@ $(document).ready(function () {
         context.canvas.height = $(".game-area").height() * 0.95;
         context.canvas.width = $(".game-area").width() * 0.95;
 
+        console.log(graph);
+        Object.values(graph.objs).map(node => {
+            node.x = Math.random() * context.canvas.width;
+            node.y = Math.random() * context.canvas.height;
+        })
     };
 
     resizeCanvas();
+
     graph.setTickCallback(graph_intersects);
 
+    $(window).resize(function () {
+        resizeCanvas();
+    });
 
 
 
