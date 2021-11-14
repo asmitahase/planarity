@@ -1,10 +1,13 @@
 $(document).ready(function () {
 
     $(".btn").click(getInputAndReload);
+    var level = 4;
+    var graph = loadGame(level);
 
-
-    function loadGame(level = 4) {
+    function loadGame(level) {
+        var graph = drawGraph(level);
         $("#text").html(`game load with level ${level}`);
+        return graph;
     }
 
     function getInputAndReload() {
@@ -33,9 +36,9 @@ $(document).ready(function () {
         return [xInterect, yIntersect];
     }
 
-    function drawGraph() {
+    function drawGraph(level) {
 
-        let lines = randomLines(5);
+        let lines = randomLines(level);
 
         let nodes = {
         };
@@ -97,6 +100,7 @@ $(document).ready(function () {
                 })
             }
         )
+        return graph;
     }
 
     // Reference
@@ -115,7 +119,7 @@ $(document).ready(function () {
         }
     };
 
-    function graph_intersects(graph) {
+    function graph_intersects(graph, level) {
         let nodes = graph.objs;
         let is_solved = true;
 
@@ -148,9 +152,10 @@ $(document).ready(function () {
             }
         );
         if (is_solved) {
-            console.log(is_solved);
+            var nextLevel = level + 1;
+            loadGame(nextLevel);
         }
     };
-    // graph.setTickCallback(graph_intersects);
-    drawGraph();
+    graph.setTickCallback(graph_intersects);
+    //drawGraph();
 });
