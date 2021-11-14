@@ -36,22 +36,19 @@ The game uses [John Tantalo](http://johntantalo.com/)'s [algorithm](http://johnt
 
 ![geogebra 4](https://user-images.githubusercontent.com/8528887/141686109-b3c4db22-ff17-4792-87f7-04e018f60bc4.png)
 
-The vertices of the graph are then randomly shuffled to get the final topology of the graph aka the puzzle piece
+The vertices of the graph are then randomly shuffled maintaining the topology to get the final puzzle piece
 
 
 ## GamePlay
 
 1. You'll be presented with a planer tangled graph at level 4 at the beginning
-2. Move the nodes with your mouse to untangle the graph and reach next level 
+2. Move the nodes with your mouse to untangle the graph and reach the next level 
 
 
 ## TechStack
-- [Javascript](https://en.wikipedia.org/wiki/JavaScript)
-- [HTML](https://en.wikipedia.org/wiki/HTML)
-- [CSS](https://en.wikipedia.org/wiki/CSS)
-- [jQuery](https://jquery.com/)
-- [Tailwind](https://tailwindcss.com/)
-- [Graph.js](https://github.com/paulfears/Graphs)
+- [jQuery](https://jquery.com/) for DOM manpulation
+- [Tailwind](https://tailwindcss.com/) to rapidly build UI elements
+- [Graph.js](https://github.com/paulfears/Graphs) to draw graphs on HTML canvas
 
 ## Contributors
 - [Asmita Hase](https://github.com/asmitahase)
