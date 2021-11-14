@@ -208,4 +208,8 @@ $(document).ready(function () {
         resize_canvas();
     });
 
+    $("#close-help").click(() => {
+        $("#help").hide();
+    });
+
 });
