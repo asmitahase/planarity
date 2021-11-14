@@ -1,23 +1,18 @@
 $(document).ready(function () {
-
-    $(".btn").click(getInputAndReload);
-
     let level = 4;
-    let graph = new Graph("playground", fps = 30, editable = true, buildable = false)
+    let graph = new Graph("playground", fps = 15, editable = true, buildable = false)
 
-    loadGame(level);
+    window.graph = graph;
+    load_game(level);
 
-    function loadGame(level) {
-        drawGraph(level);
+    function load_game(level) {
+        draw_graph(level);
+        graph.busy_drawing = false;
         $("#solved").html("");
         $("#level").html(`You're playing level ${level}`);
     }
 
-    function getInputAndReload() {
-        level = document.getElementById('input_id').value;
-        loadGame(level);
-    }
-    function randomLines(n) {
+    function generate_random_lines(n) {
         // Generate lines with different slopes
         let slopes = [];
         let lines = [];
@@ -39,7 +34,7 @@ $(document).ready(function () {
         return [xInterect, yIntersect];
     }
 
-    function drawGraph(level_n) {
+    function draw_graph(level_n) {
         // Erase old graph
         Object.values(graph.objs).map(node => node.delete());
 
@@ -48,7 +43,7 @@ $(document).ready(function () {
 
         // Make sure levels don't become exponentially difficult
         let n_lines = Math.ceil(Math.sqrt(2 * (level + 1)));
-        let lines = randomLines(n_lines);
+        let lines = generate_random_lines(n_lines);
 
         let nodes = {};
         let coordinates = {};
@@ -123,7 +118,7 @@ $(document).ready(function () {
         }
     };
 
-    function resizeCanvas() {
+    function resize_canvas() {
         let context = $("#playground").get(0).getContext("2d");
         context.canvas.height = $(".game-area").height() * 0.95;
         context.canvas.width = $(".game-area").width() * 0.95;
@@ -135,52 +130,63 @@ $(document).ready(function () {
     };
 
     function graph_intersects(graph) {
+        if (graph.busy_drawing) {
+            return;
+        }
         let date = new Date()
         // Evaluation function seems to be slow. 
         // Don't evaluate on every tick
-        if (date.getTime() % 1000 > 50) {
+        if (date.getTime() % 1000 > 500) {
             return
         }
         let is_solved = true;
         let nodes = graph.objs;
-        Object.values(nodes).map(
-            node => {
-                node.children.map(
-                    child => {
-                        let neighbour = nodes[child];
-                        let edges = graph.edges;
-                        Object.values(edges).map(
-                            edge => {
-                                let start = edge.startNodeid;
-                                let end = edge.endNodeid;
-                                // The intersecting edge must not be on node and neigbour vertices
-                                if (node.id != start && node.id != end && neighbour.id != start && neighbour.id != end) {
-                                    let startNode = nodes[start];
-                                    let endNode = nodes[end];
-                                    let doesIt = intersects(node.x, node.y, neighbour.x, neighbour.y, startNode.x, startNode.y, endNode.x, endNode.y);
-                                    if (doesIt) {
-                                        is_solved = false;
-                                    }
-                                }
-                            }
-                        )
+        let edges = graph.edges;
+
+        Object.values(edges).map(first => {
+            let edge_intersects = false;
+            Object.values(edges).map(second => {
+                if ((first.id != second.id) && (
+                    ![first.startNodeid, first.endNodeid].includes(second.startNodeid) &&
+                    ![first.startNodeid, first.endNodeid].includes(second.endNodeid)
+                )) {
+                    let first_start = nodes[first.startNodeid];
+                    let first_end = nodes[first.endNodeid];
+                    let second_start = nodes[second.startNodeid];
+                    let second_end = nodes[second.endNodeid];
+                    if (intersects(first_start.x, first_start.y, first_end.x, first_end.y, second_start.x, second_start.y, second_end.x, second_end.y)) {
+                        // First edge intersects some another edge
+                        // Mark it red
+                        edge_intersects = true;
                     }
-                )
+                }
+            });
+            if (edge_intersects) {
+                is_solved = false;
+                first.color = "#DC2626";
+            } else {
+                // First edge doesn't intersects any node
+                // Mark it green
+                first.color = "#047857";
             }
-        );
+        });
+
         if (is_solved) {
             // The game is solved. Move to next level
+            $("#level").html("");
             $("#solved").html(`Congratulations, You've completed level ${level}`);
-            loadGame(level + 1);
+
+            graph.busy_drawing = true;
+            setTimeout(() => load_game(level + 1), 2000);
             return;
         }
     };
 
-    resizeCanvas();
+    resize_canvas();
     graph.setTickCallback(graph_intersects);
 
     $(window).resize(function () {
-        resizeCanvas();
+        resize_canvas();
     });
 
 });
