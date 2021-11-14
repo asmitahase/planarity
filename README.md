@@ -2,7 +2,7 @@
 
 Live at: [asmitahase.github.io/planarity](https://asmitahase.github.io/planarity)
 
-![screenshot](https://imgur.com/ibCipgw.png)
+![screenshot](https://imgur.com/LKyVFOm.png)
 
 Planarity is a puzzle based on the concept of [Planar Graphs](https://en.wikipedia.org/wiki/Planar_graph).
 
