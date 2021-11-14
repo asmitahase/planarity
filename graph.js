@@ -1296,4 +1296,3 @@ Graph._node = function(contextid, x=false, y=false, r=false, text=""){
 
 Graph.functions = {}
 
-
