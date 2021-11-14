@@ -11,32 +11,78 @@ $(document).ready(function () {
         level = document.getElementById('input_id').value;
         loadGame(level);
     }
-    function renderGraph() {
-        return graphDS;
+    function randomLines(n) {
+        // Generate lines with different slopes
+        let slopes = [];
+        let lines = [];
+        while (lines.length < n) {
+            let slope = Math.random();
+            let intercept = Math.random();
+
+            if (!slopes.includes(slope)) {
+                slopes.push(slope);
+                lines.push([slope, intercept]);
+            }
+        }
+        return lines;
     }
-    function drawGraph(graphDS) {
+
+    function intersection(m1, c1, m2, c2) {
+        let xInterect = (c2 - c1) / (m1 - m2);
+        let yIntersect = m1 * xInterect + c1;
+        return [xInterect, yIntersect];
+    }
+
+    function drawGraph() {
+
+        let lines = randomLines(5);
 
         let nodes = {
-            1: [2, 3, 4],
-            2: [1, 3, 4],
-            3: [1, 2, 4],
-            4: [1, 2, 3],
         };
         let coordinates = {
-            1: [100, 100],
-            2: [100, 200],
-            3: [200, 100],
-            4: [200, 200],
         };
 
         let graph = new Graph("playground", fps = 60, editable = true, buildable = false)
 
-        // Draw all nodes;
+        lines.map((line, ii) => {
+            let intersections = [];
+
+            lines.map((another, jj) => {
+                if (ii != jj) {
+                    let intersect = intersection(line[0], line[1], another[0], another[1]);
+                    let index = (ii + 1) * (jj + 1);
+                    coordinates[index] = intersect;
+                    if (nodes[index] === undefined) {
+                        nodes[index] = [];
+                    }
+                    intersections.push([intersect, index]);
+                }
+
+            });
+            intersections.sort((a, b) => a[0][0] - b[0][0]);
+            intersections.map(e => console.log(e[0], e[1]));
+
+            intersections.map((current, index) => {
+                if (index == intersections.length - 1) {
+                    return
+                }
+                next = intersections[index + 1];
+                nodes[current[1]].push(next[1]);
+
+            });
+
+        });
+
         let node_objects = {};
         Object.keys(nodes).map(
             node => {
-                let x = coordinates[node][0];
-                let y = coordinates[node][1];
+                // Shuffle coordinates to make the graph look tangled
+                // Because only the topology of the graph is important
+
+                // TODO: Use interesting random distributions here
+                let x = Math.random() * 900;
+                let y = Math.random() * 900;
+
                 node_objects[node] = graph.node(x, y, 10);
             }
         );
@@ -46,15 +92,11 @@ $(document).ready(function () {
             entry => {
                 let node = entry[0];
                 let neighbours = entry[1];
-                //console.log("Node", node, "Connects to", neighbours);
                 neighbours.map(neighbour => {
-                    if (node < neighbour) {
-                        node_objects[node].connect(node_objects[neighbour]);
-                    }
-                });
+                    node_objects[node].connect(node_objects[neighbour]);
+                })
             }
-        );
-
+        )
     }
 
     // Reference
@@ -111,5 +153,5 @@ $(document).ready(function () {
     };
     // graph.setTickCallback(graph_intersects);
 
-
+    drawGraph();
 });
