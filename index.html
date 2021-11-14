@@ -15,26 +15,18 @@
 
 <body>
     <div class="container p-6 mx-auto h-screen">
-        <div class="h-1/6 mt-12">
-            <div class="toppanel text-center text-5xl">
-                <h1>Planarity</h1>
-            </div>
+        <div class="h-1/6 mt-12 text-center text-5xl">
+            <h1>Planarity</h1>
         </div>
         <div class="h-4/6">
-            <div class="grid grid-cols-6 gap-4 h-full">
-                <div class="col-span-6 game-area h-full">
-                    <canvas id="playground"></canvas>
-                </div>
-                <!-- <div class="col-span-1 sidepanel h-full"></div> -->
+            <div class="game-area h-full">
+                <canvas id="playground"></canvas>
             </div>
         </div>
         <div class="h-1/6">
-            <div class="bottompanel">
-                <div id="level" class="text-center text-2xl"></div>
-                <div id="solved" class="text-center text-2xl"></div>
-            </div>
+            <div id="level" class="text-center text-2xl"></div>
+            <div id="solved" class="text-center text-2xl"></div>
         </div>
-
     </div>
     <div class="w-64 absolute bottom-16 right-16 bg-white rounded-lg border-gray-300 border p-6 shadow-lg">
         <p>Welcome to Planarity.</p>
