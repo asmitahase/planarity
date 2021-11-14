@@ -152,6 +152,5 @@ $(document).ready(function () {
         }
     };
     // graph.setTickCallback(graph_intersects);
-
     drawGraph();
 });
