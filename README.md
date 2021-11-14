@@ -41,7 +41,7 @@ The vertices of the graph are then randomly shuffled to get the final topology o
 
 ## GamePlay
 
-1. You'll be presented with a planer tangled graph at level 4 at the beginning.
+1. You'll be presented with a planer tangled graph at level 4 at the beginning
 2. Move the nodes with your mouse to untangle the graph and reach next level 
 
 
