@@ -156,6 +156,14 @@ $(document).ready(function () {
             loadGame(nextLevel);
         }
     };
+    function resizeCanvas() {
+        let context = $("#playground").get(0).getContext("2d");
+        context.canvas.height = $(".game-area").height() * 0.95;
+        context.canvas.width = $(".game-area").width() * 0.95;
+
+    };
+
+    resizeCanvas();
     graph.setTickCallback(graph_intersects);
     //drawGraph();
 });
