@@ -83,8 +83,7 @@ $(document).ready(function () {
                 // Because only the topology of the graph is important
 
                 // TODO: Use interesting random distributions here
-                let x = Math.random() * 500;
-                let y = Math.random() * 500;
+                let x = random(context.canvas.width * 0.10, context.canvas.width * 0.90);
 
                 node_objects[node] = graph.node(x, y, 15);
             }
