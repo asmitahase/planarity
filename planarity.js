@@ -3,6 +3,7 @@ $(document).ready(function () {
     let graph = new Graph("playground", fps = 15, editable = true, buildable = false)
 
     window.graph = graph;
+    resize_canvas();
     load_game(level);
 
     function load_game(level) {
@@ -83,9 +84,11 @@ $(document).ready(function () {
                 // Because only the topology of the graph is important
 
                 // TODO: Use interesting random distributions here
+                let context = $("#playground").get(0).getContext("2d");
                 let x = random(context.canvas.width * 0.10, context.canvas.width * 0.90);
+                let y = random(context.canvas.height * 0.10, context.canvas.height * 0.90);
 
-                node_objects[node] = graph.node(x, y, 15);
+                node_objects[node] = graph.node(x, y, 10);
             }
         );
 
@@ -99,6 +102,11 @@ $(document).ready(function () {
                 })
             }
         )
+
+        // Redraw the graph if it's already solved
+        if (is_planar(graph)) {
+            draw_graph(level_n);
+        }
     }
 
     // Reference
@@ -117,28 +125,27 @@ $(document).ready(function () {
         }
     };
 
+    function random(min, max) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.random() * (max - min) + min;
+    }
+
     function resize_canvas() {
         let context = $("#playground").get(0).getContext("2d");
-        context.canvas.height = $(".game-area").height() * 0.95;
-        context.canvas.width = $(".game-area").width() * 0.95;
+        context.canvas.height = $(".game-area").height();
+        context.canvas.width = $(".game-area").width();
 
         Object.values(graph.objs).map(node => {
-            node.x = Math.random() * context.canvas.width;
-            node.y = Math.random() * context.canvas.height;
+            // Avoid drawing vertices too close to the canvas boundary
+            node.x = random(context.canvas.width * 0.10, context.canvas.width * 0.90);
+            node.y = random(context.canvas.height * 0.10, context.canvas.height * 0.90);
         })
     };
 
-    function graph_intersects(graph) {
-        if (graph.busy_drawing) {
-            return;
-        }
-        let date = new Date()
-        // Evaluation function seems to be slow. 
-        // Don't evaluate on every tick
-        if (date.getTime() % 1000 > 500) {
-            return
-        }
-        let is_solved = true;
+
+    function is_planar(graph) {
+        let is_planar = true;
         let nodes = graph.objs;
         let edges = graph.edges;
 
@@ -161,7 +168,7 @@ $(document).ready(function () {
                 }
             });
             if (edge_intersects) {
-                is_solved = false;
+                is_planar = false;
                 first.color = "#DC2626";
             } else {
                 // First edge doesn't intersects any node
@@ -169,8 +176,22 @@ $(document).ready(function () {
                 first.color = "#047857";
             }
         });
+        return is_planar;
+    };
 
-        if (is_solved) {
+    function move_to_next_level_if_solved(graph) {
+        if (graph.busy_drawing) {
+            return;
+        }
+
+        // Evaluation function seems to be slow. 
+        // Don't evaluate on every tick
+        let date = new Date()
+        if (date.getTime() % 1000 > 500) {
+            return
+        }
+
+        if (is_planar(graph)) {
             // The game is solved. Move to next level
             $("#level").html("");
             $("#solved").html(`Congratulations, You've completed level ${level}`);
@@ -179,10 +200,9 @@ $(document).ready(function () {
             setTimeout(() => load_game(level + 1), 2000);
             return;
         }
-    };
+    }
 
-    resize_canvas();
-    graph.setTickCallback(graph_intersects);
+    graph.setTickCallback(move_to_next_level_if_solved);
 
     $(window).resize(function () {
         resize_canvas();
