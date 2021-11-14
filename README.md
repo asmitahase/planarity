@@ -1,12 +1,14 @@
 # [Planarity](https://asmitahase.github.io/planarity/)
 Planarity is a puzzle based on the concept of [Planar Graphs](https://en.wikipedia.org/wiki/Planar_graph).
 
+
+![screenshot](https://imgur.com/LKyVFOm.png)
+
 Live at: [asmitahase.github.io/planarity](https://asmitahase.github.io/planarity)
 
 ## Contents
 - [Description](https://github.com/asmitahase/planarity#Description)
 - [Gameplay](https://github.com/asmitahase/planarity#GamePlay)
-- [Screenshots](https://github.com/asmitahase/planarity#Screenshots)
 - [TechStack](https://github.com/asmitahase/planarity#TechStack)
 - [Contributors](https://github.com/asmitahase/planarity#Contributors)
 - [License](https://github.com/asmitahase/planarity#License)
@@ -42,9 +44,6 @@ The vertices of the graph are then randomly shuffled to get the final topology o
 1. You'll be presented with a planer tangled graph at level 4 at the beginning.
 2. Move the nodes with your mouse to untangle the graph and reach next level 
 
-## Screenshots
-
-![screenshot](https://imgur.com/LKyVFOm.png)
 
 ## TechStack
 - [Javascript](https://en.wikipedia.org/wiki/JavaScript)
@@ -57,5 +56,8 @@ The vertices of the graph are then randomly shuffled to get the final topology o
 ## Contributors
 - Asmita Hase
 - Aditya Hase
+
+## License
+This project is free and open-source under the  GPL-3.0 License.
 
 
