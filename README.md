@@ -46,7 +46,7 @@ The vertices of the graph are then randomly shuffled maintaining the topology to
 
 
 ## TechStack
-- [jQuery](https://jquery.com/) for DOM manpulation
+- [jQuery](https://jquery.com/) for DOM manipulation
 - [Tailwind](https://tailwindcss.com/) to rapidly build UI elements
 - [Graph.js](https://github.com/paulfears/Graphs) to draw graphs on HTML canvas
 
