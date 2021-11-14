@@ -54,8 +54,8 @@ The vertices of the graph are then randomly shuffled to get the final topology o
 - [Graph.js](https://github.com/paulfears/Graphs)
 
 ## Contributors
-- Asmita Hase
-- Aditya Hase
+- [Asmita Hase](https://github.com/asmitahase)
+- [Aditya Hase](https://github.com/adityahase)
 
 ## License
 This project is free and open-source under the  GPL-3.0 License.
